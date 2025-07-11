@@ -2,31 +2,42 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Sparkles, 
-  Crown, 
-  Star, 
+  Building2, 
+  Shield, 
   Zap, 
-  Target, 
-  Award, 
-  Rocket, 
-  Shield,
+  Users, 
+  Globe, 
+  Lock, 
+  Cpu, 
+  Database,
   ArrowRight,
   CheckCircle,
-  Clock,
-  Users,
-  Globe,
+  Star,
+  Crown,
+  Award,
+  Target,
   TrendingUp,
-  Brain,
-  Lightbulb,
-  Settings,
   BarChart3,
+  Settings,
+  Headphones,
+  Clock,
+  Rocket,
+  Brain,
+  Network,
+  Server,
+  Code,
   FileText,
   MessageSquare,
-  Code,
-  Database,
-  Cpu,
-  Network,
-  Building2,
+  Image,
+  Mail,
+  Calendar,
+  Bot,
+  Wand2,
+  X,
+  Copy,
+  Download,
+  Share2,
+  Loader2,
   Phone,
   Video,
   Briefcase,
@@ -40,17 +51,7 @@ import {
   Cloud,
   HardDrive,
   Wifi,
-  Activity,
-  X,
-  Copy,
-  Download,
-  Share2,
-  Loader2,
-  Bot,
-  Wand2,
-  Image,
-  Calendar,
-  Mail
+  Activity
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
@@ -58,7 +59,7 @@ import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
 import { useAuthContext } from '../../contexts/AuthContext';
 
-export const SpecialServicesPage: React.FC = () => {
+export const EnterpriseServicesPage: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthContext();
   const [activeService, setActiveService] = useState<string | null>(null);
@@ -70,114 +71,114 @@ export const SpecialServicesPage: React.FC = () => {
     service: ''
   });
 
-  const specialServices = [
+  const enterpriseServices = [
     {
-      id: 'custom-ai-chatbots',
-      icon: Bot,
-      title: "Custom AI Chatbots",
-      description: "Intelligent conversational AI tailored to your business needs with advanced NLP and context understanding.",
+      id: 'custom-ai-platform',
+      icon: Brain,
+      title: "Custom AI Platform Development",
+      description: "Build bespoke AI solutions tailored to your specific business needs and industry requirements.",
       features: [
-        "Natural language processing",
-        "Multi-language support", 
-        "Integration ready",
-        "Custom training",
-        "24/7 availability",
-        "Advanced analytics"
+        "Custom AI model development",
+        "Industry-specific training data",
+        "Proprietary algorithm design",
+        "Full source code ownership",
+        "Ongoing model optimization",
+        "Performance monitoring & analytics"
       ],
-      pricing: "Starting at $5,000",
-      timeline: "4-6 weeks",
+      pricing: "Custom Quote",
+      timeline: "3-6 months",
       color: "from-blue-500 to-cyan-500",
       category: "AI Development"
     },
     {
-      id: 'workflow-automation',
-      icon: Workflow,
-      title: "Advanced Workflow Automation",
-      description: "End-to-end business process automation with AI-powered decision making and intelligent routing.",
+      id: 'enterprise-integration',
+      icon: Network,
+      title: "Enterprise System Integration",
+      description: "Seamlessly integrate AI capabilities into your existing enterprise infrastructure and workflows.",
       features: [
-        "Process mapping & optimization",
-        "AI decision trees",
-        "Multi-system integration",
-        "Real-time monitoring",
-        "Error handling & recovery",
-        "Performance analytics"
+        "Legacy system integration",
+        "API development & management",
+        "Data pipeline automation",
+        "Real-time synchronization",
+        "Security compliance",
+        "Scalable architecture design"
       ],
-      pricing: "Starting at $10,000",
-      timeline: "6-8 weeks",
+      pricing: "Starting at $50k",
+      timeline: "2-4 months",
       color: "from-purple-500 to-pink-500",
-      category: "Automation"
+      category: "Integration"
     },
     {
-      id: 'ai-content-creation',
-      icon: Wand2,
-      title: "AI Content Creation Suite",
-      description: "Comprehensive content generation platform for marketing, documentation, and creative projects.",
+      id: 'ai-infrastructure',
+      icon: Server,
+      title: "AI Infrastructure & Cloud",
+      description: "Deploy and manage enterprise-grade AI infrastructure with high availability and security.",
       features: [
-        "Multi-format content generation",
-        "Brand voice customization",
-        "SEO optimization",
-        "Content planning & scheduling",
-        "Performance tracking",
-        "Team collaboration tools"
+        "Cloud-native deployment",
+        "Auto-scaling capabilities",
+        "Multi-region redundancy",
+        "Advanced security protocols",
+        "Performance optimization",
+        "24/7 monitoring & support"
       ],
-      pricing: "Starting at $3,000",
-      timeline: "3-4 weeks",
+      pricing: "Starting at $25k/month",
+      timeline: "1-2 months",
       color: "from-green-500 to-emerald-500",
-      category: "Content Creation"
+      category: "Infrastructure"
     },
     {
-      id: 'computer-vision-solutions',
-      icon: Image,
-      title: "Computer Vision Solutions",
-      description: "Advanced image and video analysis for quality control, security, and business intelligence.",
-      features: [
-        "Object detection & recognition",
-        "Quality inspection automation",
-        "Real-time video analysis",
-        "Custom model training",
-        "Edge deployment options",
-        "API integration"
-      ],
-      pricing: "Starting at $15,000",
-      timeline: "8-12 weeks",
-      color: "from-orange-500 to-red-500",
-      category: "Computer Vision"
-    },
-    {
-      id: 'predictive-analytics',
+      id: 'data-analytics-platform',
       icon: BarChart3,
-      title: "Predictive Analytics Platform",
-      description: "Machine learning-powered forecasting and trend analysis for data-driven decision making.",
+      title: "Enterprise Data Analytics",
+      description: "Transform your data into actionable insights with advanced analytics and machine learning.",
       features: [
-        "Custom ML model development",
         "Real-time data processing",
-        "Interactive dashboards",
-        "Automated reporting",
-        "Risk assessment tools",
-        "Integration with existing systems"
+        "Predictive analytics models",
+        "Custom dashboard development",
+        "Automated reporting systems",
+        "Data governance & compliance",
+        "Advanced visualization tools"
       ],
-      pricing: "Starting at $12,000",
-      timeline: "6-10 weeks",
-      color: "from-indigo-500 to-purple-500",
+      pricing: "Starting at $75k",
+      timeline: "4-8 months",
+      color: "from-orange-500 to-red-500",
       category: "Analytics"
     },
     {
-      id: 'ai-consulting-strategy',
+      id: 'ai-consulting',
       icon: Briefcase,
-      title: "AI Strategy & Implementation",
-      description: "Comprehensive AI transformation consulting with roadmap development and implementation support.",
+      title: "AI Strategy & Consulting",
+      description: "Strategic guidance and roadmap development for AI transformation across your organization.",
       features: [
         "AI readiness assessment",
         "Strategic roadmap development",
-        "Technology stack selection",
-        "Implementation planning",
+        "Technology stack recommendations",
+        "ROI analysis & projections",
         "Change management support",
-        "ROI optimization"
+        "Executive training programs"
       ],
-      pricing: "Starting at $8,000",
-      timeline: "4-8 weeks",
-      color: "from-pink-500 to-rose-500",
+      pricing: "Starting at $15k",
+      timeline: "1-3 months",
+      color: "from-indigo-500 to-purple-500",
       category: "Consulting"
+    },
+    {
+      id: 'managed-ai-services',
+      icon: Settings,
+      title: "Managed AI Services",
+      description: "Complete AI operations management with dedicated support and continuous optimization.",
+      features: [
+        "Dedicated AI operations team",
+        "Proactive monitoring & maintenance",
+        "Performance optimization",
+        "Security updates & patches",
+        "Capacity planning & scaling",
+        "SLA-backed service guarantees"
+      ],
+      pricing: "Starting at $10k/month",
+      timeline: "Ongoing",
+      color: "from-pink-500 to-rose-500",
+      category: "Managed Services"
     }
   ];
 
@@ -193,7 +194,7 @@ export const SpecialServicesPage: React.FC = () => {
   const handleContactSubmit = () => {
     // Simulate form submission
     console.log('Contact form submitted:', contactForm);
-    alert('Thank you for your inquiry! Our special services team will contact you within 24 hours.');
+    alert('Thank you for your inquiry! Our enterprise team will contact you within 24 hours.');
     setActiveService(null);
     setContactForm({ name: '', email: '', company: '', message: '', service: '' });
   };
@@ -207,38 +208,70 @@ export const SpecialServicesPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-full text-yellow-400 text-sm font-medium mb-6">
-            <Sparkles className="w-4 h-4" />
-            Special AI Services
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium mb-6">
+            <Building2 className="w-4 h-4" />
+            Enterprise Solutions
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Special <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">AI Solutions</span>
+            Enterprise <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">AI Solutions</span>
           </h1>
           
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-            Cutting-edge AI solutions designed for unique business challenges. Custom development and specialized implementations.
+            Transform your enterprise with custom AI solutions. From strategy to implementation, we deliver enterprise-grade AI that scales with your business.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-6 text-gray-400">
             <div className="flex items-center gap-2">
-              <Crown className="w-5 h-5 text-yellow-400" />
-              <span>Premium Solutions</span>
+              <Shield className="w-5 h-5 text-blue-400" />
+              <span>Enterprise Security</span>
             </div>
             <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-orange-400" />
-              <span>Custom Development</span>
+              <Users className="w-5 h-5 text-purple-400" />
+              <span>Dedicated Support</span>
             </div>
             <div className="flex items-center gap-2">
-              <Award className="w-5 h-5 text-purple-400" />
-              <span>Expert Support</span>
+              <Award className="w-5 h-5 text-green-400" />
+              <span>Custom Solutions</span>
             </div>
           </div>
         </motion.div>
 
+        {/* Enterprise Benefits */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
+        >
+          <Card className="bg-gradient-to-br from-slate-800/50 to-blue-900/30 backdrop-blur-sm border-blue-500/20 text-center">
+            <CardContent className="p-6">
+              <Shield className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">Enterprise Security</h3>
+              <p className="text-gray-300">SOC 2 compliant with advanced encryption and security protocols</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-sm border-purple-500/20 text-center">
+            <CardContent className="p-6">
+              <Zap className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">High Performance</h3>
+              <p className="text-gray-300">Optimized for enterprise workloads with 99.9% uptime SLA</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-slate-800/50 to-green-900/30 backdrop-blur-sm border-green-500/20 text-center">
+            <CardContent className="p-6">
+              <Users className="w-12 h-12 text-green-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">Dedicated Support</h3>
+              <p className="text-gray-300">24/7 support with dedicated account management</p>
+            </CardContent>
+          </Card>
+        </motion.div>
+
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {specialServices.map((service, index) => (
+          {enterpriseServices.map((service, index) => (
             <motion.div
               key={service.id}
               initial={{ opacity: 0, y: 20 }}
@@ -251,7 +284,7 @@ export const SpecialServicesPage: React.FC = () => {
                     <div className={`w-12 h-12 bg-gradient-to-r ${service.color} rounded-lg flex items-center justify-center`}>
                       <service.icon className="w-6 h-6 text-white" />
                     </div>
-                    <span className="text-xs px-2 py-1 bg-yellow-500/20 text-yellow-300 rounded-full">
+                    <span className="text-xs px-2 py-1 bg-blue-500/20 text-blue-300 rounded-full">
                       {service.category}
                     </span>
                   </div>
@@ -284,7 +317,7 @@ export const SpecialServicesPage: React.FC = () => {
                       className={`w-full bg-gradient-to-r ${service.color} hover:opacity-90 transition-opacity`}
                     >
                       <Phone className="w-4 h-4 mr-2" />
-                      Request Quote
+                      Request Consultation
                     </Button>
                   </div>
                 </CardContent>
@@ -308,9 +341,9 @@ export const SpecialServicesPage: React.FC = () => {
                 exit={{ scale: 0.9, opacity: 0 }}
                 className="bg-gradient-to-br from-slate-800 to-slate-900 border border-purple-500/20 rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
               >
-                <SpecialServiceContactModal
+                <EnterpriseContactModal
                   selectedService={contactForm.service}
-                  services={specialServices}
+                  services={enterpriseServices}
                   contactForm={contactForm}
                   setContactForm={setContactForm}
                   onClose={() => setActiveService(null)}
@@ -325,8 +358,8 @@ export const SpecialServicesPage: React.FC = () => {
   );
 };
 
-// Special Service Contact Modal Component
-interface SpecialServiceContactModalProps {
+// Enterprise Contact Modal Component
+interface EnterpriseContactModalProps {
   selectedService: string;
   services: any[];
   contactForm: any;
@@ -335,7 +368,7 @@ interface SpecialServiceContactModalProps {
   onSubmit: () => void;
 }
 
-const SpecialServiceContactModal: React.FC<SpecialServiceContactModalProps> = ({
+const EnterpriseContactModal: React.FC<EnterpriseContactModalProps> = ({
   selectedService,
   services,
   contactForm,
@@ -358,10 +391,10 @@ const SpecialServiceContactModal: React.FC<SpecialServiceContactModalProps> = ({
     <div>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <Sparkles className="w-8 h-8 text-yellow-400" />
+          <Building2 className="w-8 h-8 text-blue-400" />
           <div>
-            <h2 className="text-2xl font-bold text-white">Special Service Inquiry</h2>
-            <p className="text-gray-400">Let's discuss your custom AI solution</p>
+            <h2 className="text-2xl font-bold text-white">Enterprise Consultation</h2>
+            <p className="text-gray-400">Let's discuss your AI transformation</p>
           </div>
         </div>
         <button
@@ -380,11 +413,7 @@ const SpecialServiceContactModal: React.FC<SpecialServiceContactModalProps> = ({
             </div>
             <h3 className="text-lg font-semibold text-white">{selectedServiceData.title}</h3>
           </div>
-          <p className="text-gray-300 text-sm mb-2">{selectedServiceData.description}</p>
-          <div className="flex gap-4 text-sm text-gray-400">
-            <span>Investment: {selectedServiceData.pricing}</span>
-            <span>Timeline: {selectedServiceData.timeline}</span>
-          </div>
+          <p className="text-gray-300 text-sm">{selectedServiceData.description}</p>
         </div>
       )}
 
@@ -417,12 +446,12 @@ const SpecialServiceContactModal: React.FC<SpecialServiceContactModalProps> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
-            Company Name
+            Company Name *
           </label>
           <Input
             value={contactForm.company}
             onChange={(e) => setContactForm(prev => ({ ...prev, company: e.target.value }))}
-            placeholder="Your company name (optional)"
+            placeholder="Your company name"
             className="bg-slate-700/50 border-slate-600 text-white placeholder-gray-400"
           />
         </div>
@@ -434,7 +463,7 @@ const SpecialServiceContactModal: React.FC<SpecialServiceContactModalProps> = ({
           <Textarea
             value={contactForm.message}
             onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
-            placeholder="Tell us about your project requirements, goals, and any specific features you need..."
+            placeholder="Tell us about your project requirements, timeline, and goals..."
             rows={6}
             className="bg-slate-700/50 border-slate-600 text-white placeholder-gray-400"
           />
@@ -442,8 +471,8 @@ const SpecialServiceContactModal: React.FC<SpecialServiceContactModalProps> = ({
 
         <Button
           onClick={handleSubmit}
-          disabled={loading || !contactForm.name || !contactForm.email || !contactForm.message}
-          className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:opacity-90 transition-opacity"
+          disabled={loading || !contactForm.name || !contactForm.email || !contactForm.company || !contactForm.message}
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 transition-opacity"
         >
           {loading ? (
             <>
@@ -453,13 +482,13 @@ const SpecialServiceContactModal: React.FC<SpecialServiceContactModalProps> = ({
           ) : (
             <>
               <Phone className="w-4 h-4 mr-2" />
-              Request Special Service Quote
+              Request Enterprise Consultation
             </>
           )}
         </Button>
 
         <div className="text-center text-sm text-gray-400">
-          <p>Our special services team will contact you within 24 hours</p>
+          <p>Our enterprise team will contact you within 24 hours</p>
         </div>
       </div>
     </div>

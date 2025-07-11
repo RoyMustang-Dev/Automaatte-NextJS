@@ -29,6 +29,8 @@ Welcome to Automaatte, where AI meets ambition to turn today's ideas into tomorr
         - Video Shoot Planning: Thoughtful, customized shoot plans for short films, ads, and YouTube content in AdTech and Social Media.
         - General Planning: Customized plans for any other general purpose.
 
+NOTE: The Core AI Services - AI Researchers & AI Planners, both are standalone services that can be used independently of each other and both go hand in hand with each other also. 
+Meaning User can use AI Researchers to do their research and then use AI Planners to plan out things according to their research or they can directly use AI Planners to plan out things without doing any research (by providing necessary information to the planner).
 
 2.) Special Services : We will also be providing some special services to our clients, some of the following mentioned services are in still in research phase but we will make sure to provide them to our clients as soon as possible: 
 
@@ -68,6 +70,3 @@ Welcome to Automaatte, where AI meets ambition to turn today's ideas into tomorr
 
 
 At Automaatte, we redefine productivity, bringing clarity to complexity. Step into a future where planning and research are automated, empowering you to achieve more, with precision and confidence.
-
-NOTE: The Core AI Services - AI Researchers & AI Planners, both are standalone services that can be used independently of each other and both go hand in hand with each other also. 
-Meaning User can use AI Researchers to do their research and then use AI Planners to plan out things according to their research or they can directly use AI Planners to plan out things without doing any research (by providing necessary information to the planner).

@@ -13,11 +13,11 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 export type AuthProvider = 'google' | 'github'
 
-export const signInWithProvider = async (provider: AuthProvider) => {
+export const signInWithProvider = async (provider: AuthProvider, isSignUp: boolean = false) => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: `${window.location.origin}/auth/callback${isSignUp ? '?mode=signup' : ''}`,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent'
@@ -100,6 +100,27 @@ export const checkOAuthUserExists = async (email: string) => {
     .from('profiles')
     .select('email, provider')
     .eq('email', email)
+    .single()
+
+  return { data, error }
+}
+
+// Create user profile for OAuth users
+export const createOAuthUserProfile = async (user: any) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .insert([
+      {
+        id: user.id,
+        email: user.email,
+        name: user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || '',
+        full_name: user.user_metadata?.full_name || user.user_metadata?.name || '',
+        avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || '',
+        provider: user.app_metadata?.provider || 'oauth',
+        user_type: user.email === 'adityamishra0996@gmail.com' ? 'admin' : 'free'
+      }
+    ])
+    .select()
     .single()
 
   return { data, error }

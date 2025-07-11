@@ -1,400 +1,366 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
-  FileText, 
-  Video, 
-  MessageSquare, 
-  Languages, 
-  ArrowRight, 
-  CheckCircle, 
-  Clock, 
+  FileText,
+  MessageSquare,
+  Languages,
+  Image,
+  Code,
+  Mail,
+  Calculator,
+  Bot,
+  Wand2,
+  Play,
+  ArrowRight,
+  CheckCircle,
+  Clock,
   Users,
   Zap,
   Gift,
-  Crown,
-  Play,
   Upload,
   Download,
-  Sparkles
+  Sparkles,
+  Copy,
+  RefreshCw,
+  Send,
+  Eye,
+  Heart,
+  Bookmark,
+  X,
+  Loader2
 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
+import { Input } from '../../components/ui/input';
+import { Textarea } from '../../components/ui/textarea';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 export const FreeServicesPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuthContext();
+  const [activeService, setActiveService] = useState<string | null>(null);
+  const [loading, setLoading] = useState<string | null>(null);
+  const [results, setResults] = useState<{ [key: string]: string }>({});
 
   const freeServices = [
     {
+      id: 'text-summarization',
       icon: FileText,
       title: "Text Summarization",
-      description: "Instantly summarize long documents, articles, and reports with AI-powered analysis.",
-      features: ["Document Upload", "Instant Processing", "Key Points Extraction", "Multiple Formats"],
-      dailyLimit: "5 documents",
-      avgTime: "30 seconds",
-      color: "from-blue-500 to-cyan-500",
-      demo: "Try with sample document"
+      description: "Instant, clear overviews of complex text content. Transform lengthy documents into concise summaries.",
+      features: ["Extract key points", "Adjustable length", "Multiple formats", "Instant results"],
+      inputPlaceholder: "Paste your text here to summarize...",
+      buttonText: "Summarize Text",
+      color: "from-blue-500 to-cyan-500"
     },
     {
-      icon: Video,
+      id: 'video-summarization',
+      icon: Play,
       title: "Video Summarization",
-      description: "Extract key insights and create summaries from video content automatically.",
-      features: ["YouTube Integration", "Transcript Generation", "Key Moments", "Highlight Reel"],
-      dailyLimit: "3 videos",
-      avgTime: "2-5 minutes",
-      color: "from-red-500 to-pink-500",
-      demo: "Try with sample video"
+      description: "Get quick summaries of video content. Perfect for educational videos, meetings, and presentations.",
+      features: ["Video analysis", "Key moments extraction", "Transcript generation", "Time-stamped summaries"],
+      inputPlaceholder: "Paste video URL or upload video file...",
+      buttonText: "Summarize Video",
+      color: "from-purple-500 to-pink-500"
     },
     {
+      id: 'document-summarization',
+      icon: Upload,
+      title: "Document Summarization",
+      description: "Upload and summarize PDFs, Word documents, and other file formats instantly.",
+      features: ["Multiple file formats", "Batch processing", "Structured summaries", "Download results"],
+      inputPlaceholder: "Upload your document to summarize...",
+      buttonText: "Summarize Document",
+      color: "from-green-500 to-emerald-500"
+    },
+    {
+      id: 'document-qna',
       icon: MessageSquare,
       title: "Document Q&A",
-      description: "Ask questions about your documents and get intelligent, contextual answers.",
-      features: ["Natural Language Queries", "Context Understanding", "Source References", "Follow-up Questions"],
-      dailyLimit: "10 questions",
-      avgTime: "10 seconds",
-      color: "from-green-500 to-emerald-500",
-      demo: "Try with sample document"
+      description: "Ask detailed questions about your documents and get precise answers based on the content.",
+      features: ["Context-aware answers", "Multiple questions", "Source citations", "Interactive chat"],
+      inputPlaceholder: "Upload document and ask your questions...",
+      buttonText: "Start Q&A",
+      color: "from-orange-500 to-red-500"
     },
     {
+      id: 'language-translation',
       icon: Languages,
-      title: "Real-time Translation",
-      description: "Translate text between multiple languages with high accuracy and context awareness.",
-      features: ["50+ Languages", "Context Preservation", "Batch Translation", "Format Retention"],
-      dailyLimit: "20 translations",
-      avgTime: "5 seconds",
-      color: "from-purple-500 to-indigo-500",
-      demo: "Try translation now"
+      title: "Real-Time Language Translation",
+      description: "Break language barriers with seamless text and speech translations in real-time.",
+      features: ["100+ languages", "Text & speech", "Real-time translation", "Context preservation"],
+      inputPlaceholder: "Enter text to translate or speak...",
+      buttonText: "Translate",
+      color: "from-indigo-500 to-purple-500"
     }
   ];
 
-  const usageStats = [
-    { label: "Daily Active Users", value: "10K+", icon: Users },
-    { label: "Documents Processed", value: "50K+", icon: FileText },
-    { label: "Videos Summarized", value: "5K+", icon: Video },
-    { label: "Questions Answered", value: "100K+", icon: MessageSquare }
-  ];
+  const handleServiceAction = async (serviceId: string, input: string) => {
+    if (!isAuthenticated) {
+      navigate('/auth/signin');
+      return;
+    }
 
-  const comparisonFeatures = [
-    { feature: "Text Summarization", free: "5/day", paid: "Unlimited", enterprise: "Unlimited" },
-    { feature: "Video Summarization", free: "3/day", paid: "Unlimited", enterprise: "Unlimited" },
-    { feature: "Document Q&A", free: "10/day", paid: "Unlimited", enterprise: "Unlimited" },
-    { feature: "Real-time Translation", free: "20/day", paid: "Unlimited", enterprise: "Unlimited" },
-    { feature: "AI Researchers", free: "❌", paid: "✅", enterprise: "✅" },
-    { feature: "AI Planners", free: "❌", paid: "✅", enterprise: "✅" },
-    { feature: "Custom AI Solutions", free: "❌", paid: "❌", enterprise: "✅" },
-    { feature: "Priority Support", free: "❌", paid: "✅", enterprise: "✅" },
-    { feature: "API Access", free: "❌", paid: "Limited", enterprise: "Full" }
-  ];
+    setLoading(serviceId);
+    
+    // Simulate API call
+    setTimeout(() => {
+      const mockResults = {
+        'text-summarization': `📝 **Text Summary:**\n\n**Key Points:**\n• Main topic: ${input.slice(0, 30)}...\n• Important details extracted\n• Core conclusions identified\n\n**Summary:**\nYour text has been condensed from ${input.length} characters to this concise overview, capturing the essential information while maintaining context and meaning.\n\n**Reduction:** 75% shorter while preserving key insights.`,
+        'video-summarization': `🎥 **Video Summary:**\n\n**Key Moments:**\n• 00:30 - Introduction and main topic\n• 02:15 - Key discussion points\n• 05:45 - Important conclusions\n\n**Main Content:**\nThis video covers essential topics with clear explanations and practical examples.\n\n**Duration:** Original 10:30 → Summary covers main points\n**Transcript:** Available with timestamps`,
+        'document-summarization': `📄 **Document Summary:**\n\n**Document Analysis:**\n• Type: PDF Document\n• Pages: 15\n• Word Count: ~3,500 words\n\n**Executive Summary:**\nThe document discusses key business strategies and implementation approaches...\n\n**Main Sections:**\n1. Introduction and objectives\n2. Methodology and approach\n3. Results and recommendations\n\n**Key Takeaways:**\n• Strategic insights identified\n• Actionable recommendations provided\n• Clear next steps outlined`,
+        'document-qna': `❓ **Document Q&A Results:**\n\n**Your Question:** [Based on uploaded document]\n\n**Answer:**\nBased on the document content, here's a detailed response to your question...\n\n**Source References:**\n• Page 3, Section 2.1\n• Page 7, Figure 4\n• Page 12, Conclusion\n\n**Confidence:** 95%\n**Additional Context:** Related information found in sections 3.2 and 4.1`,
+        'language-translation': `🌐 **Translation Results:**\n\n**Original Text:** ${input.slice(0, 50)}...\n**Detected Language:** English\n**Target Language:** Spanish\n\n**Translation:**\n[AI-powered translation with context preservation]\n\n**Quality Score:** 98%\n**Alternative Translations:** 2 variations available\n**Cultural Context:** Adapted for target audience`
+      };
+
+      setResults(prev => ({
+        ...prev,
+        [serviceId]: mockResults[serviceId as keyof typeof mockResults] || "AI processing complete! Results would appear here."
+      }));
+      setLoading(null);
+    }, 2000);
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 pt-20 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Gift className="w-8 h-8 text-green-400" />
-            <h1 className="text-4xl md:text-6xl font-bold text-white">
-              Free AI Services
-            </h1>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full text-green-400 text-sm font-medium mb-6">
+            <Gift className="w-4 h-4" />
+            Free AI Services
           </div>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Experience the power of AI automation with our free tier services. No credit card required, start using AI tools immediately.
+          
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+            Free <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">AI Tools</span>
+          </h1>
+          
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            Experience the power of AI with our free tools. No credit card required, just sign up and start automating!
           </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-6 text-gray-400">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-green-400" />
+              <span>No Credit Card</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-blue-400" />
+              <span>Instant Results</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-purple-400" />
+              <span>10,000+ Users</span>
+            </div>
+          </div>
         </motion.div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
-            <TabsTrigger value="overview">
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="services">
-              Services
-            </TabsTrigger>
-            <TabsTrigger value="demo">
-              Try Now
-            </TabsTrigger>
-            <TabsTrigger value="compare">
-              Compare Plans
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-12">
-            {/* Usage Statistics */}
-            <section>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="mb-8"
-              >
-                <h2 className="text-3xl font-bold text-white mb-6 text-center">Trusted by Thousands</h2>
-                <p className="text-gray-300 text-lg text-center max-w-2xl mx-auto">
-                  Join our growing community of users who are already experiencing the benefits of AI automation.
-                </p>
-              </motion.div>
-
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                {usageStats.map((stat, index) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-                  >
-                    <Card className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-sm border-purple-500/20 text-center">
-                      <CardContent className="p-6">
-                        <stat.icon className="w-8 h-8 text-green-400 mx-auto mb-3" />
-                        <div className="text-2xl font-bold text-white mb-2">{stat.value}</div>
-                        <div className="text-gray-400 text-sm">{stat.label}</div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </section>
-
-            {/* Free Services Grid */}
-            <section>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="mb-8"
-              >
-                <h2 className="text-3xl font-bold text-white mb-6">Available Free Services</h2>
-                <p className="text-gray-300 text-lg">
-                  Get started with these powerful AI tools at no cost. Perfect for individuals and small teams.
-                </p>
-              </motion.div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {freeServices.map((service, index) => (
-                  <motion.div
-                    key={service.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-                    whileHover={{ scale: 1.02, y: -5 }}
-                  >
-                    <Card className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-sm border-purple-500/20 h-full">
-                      <CardHeader>
-                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-4`}>
-                          <service.icon className="w-8 h-8 text-white" />
-                        </div>
-                        <CardTitle className="text-xl font-bold text-white">{service.title}</CardTitle>
-                        <p className="text-green-300 text-sm">Free • {service.dailyLimit}</p>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-300 mb-6">{service.description}</p>
-                        
-                        <div className="space-y-3 mb-6">
-                          {service.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-center space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                              <span className="text-gray-300 text-sm">{feature}</span>
-                            </div>
-                          ))}
-                        </div>
-                        
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center space-x-2">
-                            <Clock className="w-4 h-4 text-gray-400" />
-                            <span className="text-gray-400 text-sm">{service.avgTime}</span>
-                          </div>
-                          <span className="text-green-400 text-sm font-medium">{service.dailyLimit}</span>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Button variant="gradient" className="w-full">
-                            <Play className="w-4 h-4 mr-2" />
-                            Try Now
-                          </Button>
-                          <Button variant="ghost" className="w-full text-gray-300">
-                            {service.demo}
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </section>
-
-            {/* Upgrade Prompt */}
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {freeServices.map((service, index) => (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
+              key={service.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
             >
-              <Card className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm border-purple-500/20">
-                <CardContent className="p-8 text-center">
-                  <Crown className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold text-white mb-4">Want More?</h3>
-                  <p className="text-gray-300 mb-6">
-                    Upgrade to access AI Researchers, Planners, and unlimited usage of all free services.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link to="/auth/signup">
-                      <Button variant="gradient" size="lg">
-                        <Crown className="w-5 h-5 mr-2" />
-                        Upgrade to Premium
-                      </Button>
-                    </Link>
-                    <Button variant="outline" size="lg">
-                      View All Plans
-                    </Button>
+              <Card className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-sm border-purple-500/20 hover:border-purple-400/40 transition-all duration-300 h-full">
+                <CardHeader>
+                  <div className={`w-12 h-12 bg-gradient-to-r ${service.color} rounded-lg flex items-center justify-center mb-4`}>
+                    <service.icon className="w-6 h-6 text-white" />
                   </div>
+                  <CardTitle className="text-white text-xl">{service.title}</CardTitle>
+                  <p className="text-gray-300">{service.description}</p>
+                </CardHeader>
+                
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    {service.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-sm text-gray-400">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <Button
+                    onClick={() => setActiveService(service.id)}
+                    className={`w-full bg-gradient-to-r ${service.color} hover:opacity-90 transition-opacity`}
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    Try Now
+                  </Button>
                 </CardContent>
               </Card>
             </motion.div>
-          </TabsContent>
+          ))}
+        </div>
 
-          {/* Services Tab */}
-          <TabsContent value="services" className="space-y-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {freeServices.map((service, index) => (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02, y: -5 }}
+        {/* Service Modal */}
+        <AnimatePresence>
+          {activeService && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-gradient-to-br from-slate-800 to-slate-900 border border-purple-500/20 rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              >
+                <ServiceModal
+                  service={freeServices.find(s => s.id === activeService)!}
+                  onClose={() => setActiveService(null)}
+                  onSubmit={handleServiceAction}
+                  loading={loading === activeService}
+                  result={results[activeService]}
+                  onCopy={copyToClipboard}
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
+// Service Modal Component
+interface ServiceModalProps {
+  service: {
+    id: string;
+    icon: React.ComponentType<any>;
+    title: string;
+    description: string;
+    features: string[];
+    inputPlaceholder: string;
+    buttonText: string;
+    color: string;
+  };
+  onClose: () => void;
+  onSubmit: (serviceId: string, input: string) => void;
+  loading: boolean;
+  result?: string;
+  onCopy: (text: string) => void;
+}
+
+const ServiceModal: React.FC<ServiceModalProps> = ({
+  service,
+  onClose,
+  onSubmit,
+  loading,
+  result,
+  onCopy
+}) => {
+  const [input, setInput] = useState('');
+
+  const handleSubmit = () => {
+    if (input.trim()) {
+      onSubmit(service.id, input);
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 bg-gradient-to-r ${service.color} rounded-lg flex items-center justify-center`}>
+            <service.icon className="w-5 h-5 text-white" />
+          </div>
+          <h2 className="text-2xl font-bold text-white">{service.title}</h2>
+        </div>
+        <button
+          onClick={onClose}
+          className="text-gray-400 hover:text-white transition-colors"
+        >
+          <X className="w-6 h-6" />
+        </button>
+      </div>
+
+      <p className="text-gray-300 mb-6">{service.description}</p>
+
+      <div className="space-y-4">
+        {service.id === 'image-analyzer' ? (
+          <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center">
+            <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-400 mb-4">Drag & drop an image or click to upload</p>
+            <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-700">
+              <Upload className="w-4 h-4 mr-2" />
+              Choose File
+            </Button>
+          </div>
+        ) : (
+          <Textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={service.inputPlaceholder}
+            rows={6}
+            className="bg-slate-700/50 border-slate-600 text-white placeholder-gray-400"
+          />
+        )}
+
+        <Button
+          onClick={handleSubmit}
+          disabled={loading || (!input.trim() && service.id !== 'image-analyzer')}
+          className={`w-full bg-gradient-to-r ${service.color} hover:opacity-90 transition-opacity`}
+        >
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            <>
+              <service.icon className="w-4 h-4 mr-2" />
+              {service.buttonText}
+            </>
+          )}
+        </Button>
+
+        {result && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6 p-4 bg-slate-700/30 rounded-lg border border-slate-600"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold text-white">Result</h3>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onCopy(result)}
+                  className="border-slate-600 text-white hover:bg-slate-700"
                 >
-                  <Card className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-sm border-purple-500/20 h-full">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center`}>
-                          <service.icon className="w-6 h-6 text-white" />
-                        </div>
-                        <span className="text-green-400 bg-green-500/20 px-3 py-1 rounded-full text-sm">
-                          {service.dailyLimit}
-                        </span>
-                      </div>
-                      <CardTitle className="text-xl font-bold text-white">{service.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-300 mb-4">{service.description}</p>
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-gray-400 text-sm">Average time:</span>
-                        <span className="text-white text-sm">{service.avgTime}</span>
-                      </div>
-                      <Button variant="ai" className="w-full">
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        Launch Service
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Demo Tab */}
-          <TabsContent value="demo" className="space-y-8">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-white mb-4">Try Our Services</h2>
-              <p className="text-gray-300 text-lg">
-                Experience the power of AI automation with these interactive demos.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {freeServices.map((service, index) => (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  <Copy className="w-4 h-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setInput('')}
+                  className="border-slate-600 text-white hover:bg-slate-700"
                 >
-                  <Card className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-sm border-purple-500/20">
-                    <CardHeader className="text-center">
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center mx-auto mb-4`}>
-                        <service.icon className="w-8 h-8 text-white" />
-                      </div>
-                      <CardTitle className="text-xl font-bold text-white">{service.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-center">
-                      <p className="text-gray-300 mb-6">{service.description}</p>
-                      <div className="space-y-3">
-                        <Button variant="gradient" className="w-full">
-                          <Play className="w-4 h-4 mr-2" />
-                          Try Interactive Demo
-                        </Button>
-                        <Button variant="outline" className="w-full">
-                          <Upload className="w-4 h-4 mr-2" />
-                          Upload Your File
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+                  <RefreshCw className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
-          </TabsContent>
-
-          {/* Compare Tab */}
-          <TabsContent value="compare" className="space-y-8">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-white mb-4">Compare Plans</h2>
-              <p className="text-gray-300 text-lg">
-                See what's included in each plan and choose the best option for your needs.
-              </p>
+            <div className="text-gray-300 whitespace-pre-wrap font-mono text-sm bg-slate-800/50 p-3 rounded border">
+              {result}
             </div>
-
-            <Card className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-sm border-purple-500/20">
-              <CardContent className="p-6">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-purple-500/20">
-                        <th className="text-left py-4 px-4 text-white font-semibold">Features</th>
-                        <th className="text-center py-4 px-4 text-green-400 font-semibold">Free</th>
-                        <th className="text-center py-4 px-4 text-purple-400 font-semibold">Premium</th>
-                        <th className="text-center py-4 px-4 text-blue-400 font-semibold">Enterprise</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {comparisonFeatures.map((item, index) => (
-                        <tr key={item.feature} className="border-b border-slate-700/50">
-                          <td className="py-3 px-4 text-gray-300">{item.feature}</td>
-                          <td className="py-3 px-4 text-center text-gray-300">{item.free}</td>
-                          <td className="py-3 px-4 text-center text-gray-300">{item.paid}</td>
-                          <td className="py-3 px-4 text-center text-gray-300">{item.enterprise}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                
-                <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
-                  <Link to="/auth/signup">
-                    <Button variant="outline" size="lg">
-                      Start Free
-                    </Button>
-                  </Link>
-                  <Link to="/auth/signup">
-                    <Button variant="gradient" size="lg">
-                      <Crown className="w-5 h-5 mr-2" />
-                      Upgrade to Premium
-                    </Button>
-                  </Link>
-                  <Link to="/contact">
-                    <Button variant="ai" size="lg">
-                      Contact Sales
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+          </motion.div>
+        )}
       </div>
     </div>
   );

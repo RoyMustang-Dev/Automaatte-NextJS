@@ -11,6 +11,8 @@ import { ProfilePage } from './pages/ProfilePage';
 import { CoreServicesPage } from './pages/services/CoreServicesPage';
 import { SpecialServicesPage } from './pages/services/SpecialServicesPage';
 import { FreeServicesPage } from './pages/services/FreeServicesPage';
+import { PaidServicesPage } from './pages/services/PaidServicesPage';
+import { EnterpriseServicesPage } from './pages/services/EnterpriseServicesPage';
 import { AboutPage } from './pages/AboutPage';
 import { BlogPage } from './pages/BlogPage';
 import { BlogAdminPage } from './pages/admin/BlogAdminPage';
@@ -62,6 +64,8 @@ function App() {
         <Route path="/services/core" element={<CoreServicesPage />} />
         <Route path="/services/special" element={<SpecialServicesPage />} />
         <Route path="/services/free" element={<FreeServicesPage />} />
+        <Route path="/services/paid" element={<PaidServicesPage />} />
+        <Route path="/services/enterprise" element={<EnterpriseServicesPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:slug" element={<BlogPage />} />

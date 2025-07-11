@@ -71,7 +71,7 @@ export const SignUpPage: React.FC = () => {
   const handleGoogleSignUp = async () => {
     try {
       setError('');
-      const { error } = await signInWithProvider('google');
+      const { error } = await signInWithProvider('google', true); // Pass true for signup
       if (error) {
         setError(error.message);
       }
@@ -83,7 +83,7 @@ export const SignUpPage: React.FC = () => {
   const handleGitHubSignUp = async () => {
     try {
       setError('');
-      const { error } = await signInWithProvider('github');
+      const { error } = await signInWithProvider('github', true); // Pass true for signup
       if (error) {
         setError(error.message);
       }
