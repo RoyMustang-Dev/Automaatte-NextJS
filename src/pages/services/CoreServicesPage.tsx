@@ -54,6 +54,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { aiService } from '../../lib/aiService';
 
 export const CoreServicesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -211,33 +212,89 @@ export const CoreServicesPage: React.FC = () => {
     }
 
     setLoading(serviceId);
-    
-    // Simulate API call
-    setTimeout(() => {
-      const mockResults = {
-        // AI Researchers Results
-        'vacation-researching': `🏖️ **Vacation Research Results:**\n\n**Destination Analysis:**\n• Best time to visit: Spring/Fall for optimal weather\n• Average daily budget: $150-200 per person\n• Top attractions: Museums, parks, local cuisine\n• Cultural insights and local customs\n\n**Travel Insights:**\n• Flight costs and best booking times\n• Accommodation options and pricing\n• Local transportation and safety\n• Weather patterns and seasonal considerations\n\n**Recommendations:**\n• Essential experiences and activities\n• Budget breakdown by category\n• Travel tips and cultural etiquette`,
-        'education-researching': `🎓 **Education Research Results:**\n\n**Program Analysis:**\n• Top 5 institutions offering your desired program\n• Average tuition: $15,000-25,000 per year\n• Duration: 18-24 months\n• Accreditation and rankings\n\n**Career Prospects:**\n• Average starting salary: $75,000\n• Job growth rate: 15% over next 5 years\n• Top employers and industry demand\n• Skills and competencies required\n\n**Admission Requirements:**\n• GPA requirements and prerequisites\n• Application deadlines and processes\n• Scholarship and financial aid options`,
-        'insurance-researching': `🛡️ **Insurance Research Results:**\n\n**Policy Comparison:**\n• Top 5 insurance providers in your area\n• Coverage options and premium ranges\n• Deductibles and claim processes\n• Customer satisfaction ratings\n\n**Coverage Analysis:**\n• Medical: $500-2000 deductible options\n• Vehicle: Comprehensive vs liability\n• Benefits and exclusions breakdown\n• Network providers and coverage areas\n\n**Recommendations:**\n• Best value policies for your needs\n• Cost-saving strategies and discounts\n• Policy features comparison`,
-        'investment-researching': `📈 **Investment Research Results:**\n\n**Market Analysis:**\n• Current market trends and opportunities\n• Risk assessment for different asset classes\n• Historical performance data\n• Economic indicators and forecasts\n\n**Investment Options:**\n• Stocks: Tech sector showing 12% growth\n• Crypto: Bitcoin and Ethereum analysis\n• Mutual funds: Low-cost index options\n• Bonds: Government vs corporate yields\n\n**Risk Assessment:**\n• Portfolio diversification strategies\n• Risk tolerance evaluation\n• Investment timeline considerations`,
-        'video-shoot-researching': `🎬 **Video Shoot Research Results:**\n\n**Content Strategy:**\n• Target audience analysis and preferences\n• Trending topics and viral content patterns\n• Platform-specific optimization strategies\n• Competitor analysis and market gaps\n\n**Production Insights:**\n• Equipment recommendations and costs\n• Location scouting and permits\n• Crew requirements and budget\n• Post-production workflow and tools\n\n**Market Trends:**\n• Current video marketing trends\n• Engagement metrics and best practices\n• Monetization strategies and opportunities`,
-        'general-researching': `🔍 **General Research Results:**\n\n**Comprehensive Analysis:**\n• Market overview and key trends\n• Competitive landscape analysis\n• Industry insights and opportunities\n• Data-driven recommendations\n\n**Key Findings:**\n• Primary research sources and data\n• Statistical analysis and patterns\n• Expert opinions and forecasts\n• Risk factors and considerations\n\n**Actionable Insights:**\n• Strategic recommendations\n• Implementation considerations\n• Success metrics and KPIs\n• Next steps and follow-up actions`,
 
-        // AI Planners Results
-        'vacation-planning': `🗓️ **Vacation Plan Created:**\n\n**Detailed Itinerary:**\n• Day-by-day schedule with activities\n• Accommodation bookings and confirmations\n• Transportation arrangements\n• Restaurant reservations and dining plans\n\n**Budget Management:**\n• Total estimated cost: $2,500 per person\n• Daily spending breakdown\n• Emergency fund recommendations\n• Payment schedule and booking timeline\n\n**Travel Coordination:**\n• Packing checklist and essentials\n• Document requirements and copies\n• Emergency contacts and procedures\n• Local customs and etiquette guide`,
-        'education-planning': `📚 **Education Plan Created:**\n\n**Career Pathway:**\n• Step-by-step educational roadmap\n• Course selection and prerequisites\n• Timeline for degree completion\n• Skill development milestones\n\n**Application Strategy:**\n• University application timeline\n• Required documents and deadlines\n• Scholarship application strategy\n• Backup options and alternatives\n\n**Goal Achievement:**\n• Short-term and long-term objectives\n• Progress tracking methods\n• Resource allocation and budgeting\n• Success metrics and evaluation`,
-        'insurance-planning': `📋 **Insurance Plan Created:**\n\n**Coverage Strategy:**\n• Recommended policy combinations\n• Premium payment schedule\n• Coverage limits and deductibles\n• Family protection priorities\n\n**Risk Management:**\n• Identified coverage gaps\n• Emergency fund requirements\n• Claim procedures and documentation\n• Annual review and adjustment plan\n\n**Cost Optimization:**\n• Multi-policy discounts available\n• Payment frequency options\n• Deductible optimization strategy\n• Long-term cost projections`,
-        'money-investment-planning': `💰 **Investment Plan Created:**\n\n**Portfolio Strategy:**\n• Asset allocation: 60% stocks, 30% bonds, 10% alternatives\n• Risk-adjusted return projections\n• Diversification across sectors and regions\n• Rebalancing schedule and triggers\n\n**Implementation Timeline:**\n• Phase 1: Emergency fund (3 months)\n• Phase 2: Core portfolio building (6 months)\n• Phase 3: Growth investments (ongoing)\n• Regular review and adjustment schedule\n\n**Goal Tracking:**\n• Target returns and milestones\n• Performance monitoring tools\n• Tax optimization strategies\n• Retirement planning integration`,
-        'video-shoot-planning': `🎥 **Video Shoot Plan Created:**\n\n**Production Schedule:**\n• Pre-production: 2 weeks planning\n• Shooting days: 3-day schedule\n• Post-production: 1 week editing\n• Distribution and marketing timeline\n\n**Resource Allocation:**\n• Equipment rental and setup\n• Crew assignments and responsibilities\n• Location bookings and permits\n• Budget breakdown by category\n\n**Quality Assurance:**\n• Shot list and storyboard\n• Backup plans and contingencies\n• Quality checkpoints and reviews\n• Delivery specifications and formats`,
-        'general-planning': `📊 **Custom Plan Created:**\n\n**Strategic Framework:**\n• Goal definition and success metrics\n• Resource requirements and allocation\n• Timeline with key milestones\n• Risk assessment and mitigation\n\n**Implementation Roadmap:**\n• Phase-wise execution plan\n• Task assignments and responsibilities\n• Progress tracking and reporting\n• Quality control checkpoints\n\n**Success Monitoring:**\n• KPI dashboard and metrics\n• Regular review and adjustment\n• Stakeholder communication plan\n• Continuous improvement process`
-      };
+    try {
+      // Get user tier for AI service
+      const userTier = user?.user_type === 'admin' ? 'special' :
+                      user?.user_type === 'paid' ? 'core' : 'free';
 
+      // Call the appropriate AI service based on service ID
+      let response;
+
+      if (serviceId.includes('researching') || serviceId.includes('research')) {
+        // AI Researchers
+        if (serviceId.includes('vacation')) {
+          response = await aiService.vacationResearch(input, userTier);
+        } else if (serviceId.includes('education')) {
+          response = await aiService.educationResearch(input, userTier);
+        } else if (serviceId.includes('insurance')) {
+          response = await aiService.insuranceResearch(input, userTier);
+        } else if (serviceId.includes('investment')) {
+          response = await aiService.investmentResearch(input, userTier);
+        } else if (serviceId.includes('video')) {
+          response = await aiService.videoShootResearch(input, userTier);
+        } else {
+          response = await aiService.generalResearch(input, userTier);
+        }
+      } else {
+        // AI Planners
+        if (serviceId.includes('vacation')) {
+          response = await aiService.vacationPlanning(input, userTier);
+        } else if (serviceId.includes('education')) {
+          response = await aiService.educationPlanning(input, userTier);
+        } else if (serviceId.includes('insurance')) {
+          response = await aiService.insurancePlanning(input, userTier);
+        } else if (serviceId.includes('investment') || serviceId.includes('money')) {
+          response = await aiService.investmentPlanning(input, userTier);
+        } else if (serviceId.includes('video')) {
+          response = await aiService.videoShootPlanning(input, userTier);
+        } else {
+          response = await aiService.generalPlanning(input, userTier);
+        }
+      }
+
+      if (response.success && response.data) {
+        // Format the AI response for display
+        let formattedResult = '';
+
+        if (typeof response.data === 'string') {
+          formattedResult = response.data;
+        } else if (response.data.vacation_plan || response.data.education_plan || response.data.insurance_plan || response.data.investment_plan || response.data.production_plan || response.data.strategic_plan) {
+          // Planning response
+          const planKey = Object.keys(response.data).find(key => key.includes('_plan'));
+          formattedResult = response.data[planKey] || JSON.stringify(response.data, null, 2);
+        } else if (response.data.destination_analysis || response.data.education_analysis || response.data.insurance_analysis || response.data.investment_analysis || response.data.video_analysis || response.data.research_analysis) {
+          // Research response
+          const analysisKey = Object.keys(response.data).find(key => key.includes('_analysis'));
+          formattedResult = response.data[analysisKey] || JSON.stringify(response.data, null, 2);
+        } else {
+          // Fallback to JSON display
+          formattedResult = JSON.stringify(response.data, null, 2);
+        }
+
+        // Add processing info
+        const processingInfo = `\n\n---\n**Processing Info:**\n• Response time: ${response.processing_time.toFixed(2)}s\n• Cached: ${response.cached ? 'Yes' : 'No'}\n• Timestamp: ${new Date(response.timestamp).toLocaleString()}`;
+
+        setResults(prev => ({
+          ...prev,
+          [serviceId]: formattedResult + processingInfo
+        }));
+      } else {
+        // Handle error response
+        setResults(prev => ({
+          ...prev,
+          [serviceId]: `❌ **Service Error:**\n\n${response.error || 'Unknown error occurred'}\n\nPlease try again or contact support if the issue persists.`
+        }));
+      }
+    } catch (error) {
+      console.error('AI Service error:', error);
       setResults(prev => ({
         ...prev,
-        [serviceId]: mockResults[serviceId as keyof typeof mockResults] || "Research complete! Detailed analysis would appear here."
+        [serviceId]: `❌ **Connection Error:**\n\nFailed to connect to AI services. Please check your internet connection and try again.\n\nError: ${error instanceof Error ? error.message : 'Unknown error'}`
       }));
+    } finally {
       setLoading(null);
-    }, 3000);
+    }
   };
 
   const copyToClipboard = (text: string) => {
