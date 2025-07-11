@@ -1,0 +1,89 @@
+1.) Redesign the homepage from scratch, because right now the homepage components are brresaking, the herosection is looking like shit.
+
+2.) Currently the whole website is a SPA, I don't want this to be a SPA.
+3.) Every component must have their own page.
+4.) Update the NavBar accordingly
+5.) Create 3 test users - one who has only free access, one who has paid access, & one who is a enterpize user(corporate user)
+Create the dashboards for all these 3 types of users accordingly, with every required dashboard features.
+
+6.) Homepage should have the below components
+- Hero Section + Spline (as a background)
+- A marketing related Infinite looped content strip carefully & very creatively designed to attract both the Investors + Potential Clients
+- Why Automaatte
+- Our Core Services
+- Services at a Glance
+- What makes us better
+- Why choose US for Corporates
+- How we can help Automate things (for both normal + paid user, and corporate user)
+- CTA
+- Subscribe to Our Newsletter 
+(Anyother section that you feel is necessary for an AI Automation Agency to have)
+Sprinkle around the whole website some marketing related components/elements to attract both the Investors + Potential Clients.
+
+7.) Create Separate Pages for each services
+- Core Services
+- Special Services (there will be some prototypes added here later on, but this section is mainly for on-demand services like whatever the client wants, so design this accordingly. Also add a schema kind of thing for every service that I have listed in Special Services having - How & using what technologies we will create those component + What will be the development time to develop each and every component of the service + What will be the cost associated with each component, + etc + whatever you feel that is necesary to be added here)
+
+- Free Services
+
+8.) Create a About Us Page, scrape this website - "https://aditya-mishra-ds-portfolio.vercel.app/", it is my portfolio website. So bacically I am the one who will be working solely on this (With plans to hire people in the future). So create the About Us section accordingly.
+
+9.) Create Blog page + An admin page to create these blogs (use the email id = adityamishra0996@gmail.com & password = automAATTE2025@@, as loging credentials)
+
+10.) Create Careers Page (future plans to hire people, so create this page accordingly and as professional as possible)
+
+11.) Create a marvelous Contact page
+12.) Create a comprehensive Support Page, and add these three sections also on this page 
+    - Help Center
+    - Documentation
+    - FAQs
+13.) Create a most comprehensive Privacy Policy page and the content must be as Professional as possible. (Use Judicial Terms as much as possible and the Judicial Flow of documentation)
+
+14.) Create a most comprehensive, professional Terms of Service page. (Use Judicial Terms as much as possible and the Judicial Flow of documentation)
+
+15.) Link all these created pages accordingly in the footer.
+
+NOTE : Add these into the memory
+1.) Every created must match the whole website's current theme.
+2.) Do not use any bogus or exaggerated Stats, as we are just starting out we do not have any of those stats.
+So create some carefully & very creative, professional content for marketing to attract both the Investors + Potential Clients.
+
+
+
+
+1.) Instead of putting everything on Nabar directly use a Dropdown for showing signed in/logged in users.
+
+- Instead of "Welcome, username", just use the (profile pic + username), and make this into the dropdown having the Dashboard, LogOut Button, etc.
+
+- Remove the "Home" nav item as its not needed, by clicking on Automaatte we are already getting redirected to the HomePage, so we don't need "Home" item.
+
+2.) The icons used in the infinite looping element is shit from Anus, don't use Emojis as icons ever (add this also into memory).
+
+3.) The complete "Services at a Glance" section needs to be redesigned, right now its looking like shit. Use more creative & professional way to make this component.
+
+4.) Move "Subcribe to Our Newsletter" section, into the footer and place it just below the navigation links.
+
+5.) Add "Scroll Down" button at the end of the Hero section.
+6.) Add "Scroll Back Up" button in the footer. Also, clicking on the logo in the footer must also take the users to the Herosection.
+
+7.) Clicking on any navigation links on the footer must take the users to the very top of that clicked page. Similarly, clicking on any navbar items must also take the users to the very top of that particular clicked page.
+
+8.) The Blogs & the Admin page for the blogs must be fully fuctional, also add the feature - image upload/image url links, to be added to the blogs.
+The blogs must support - latex + HTML (code blocks) rendering, having features just like Jupyter Notebooks.
+
+9.) I have added my profile picture in the public/assets folder, use it to update the generic gradient image in the About Us section.
+
+10.) In "Get in Touch" section, there are 3 different buttons, all with the same text "Contact Now".
+For Email Us - "Contact Now" is okay
+For Live Chat - use "Chat Now"
+For Help Center - use something like "Check Now" or "Visit Now" or any other creative text.
+
+11.) Update the FAQs in "Get in Touch" to have more really important/common faqs.
+
+12.) In Help Center, the search mechanism is not working. Implement the search functionality, the search must be dynamic in nature.
+Add as many related/important/common articels/content as possible in the Help Center. Make this help center as comprehensive as possible.
+
+13.) The filter menu, just below the search, in the "Get in Touch" section is not loooking good, the components are kind of breaking. Update this to look good & fix the brewaking component.
+
+
+After implementing all the above asked things, let me know how can we handle "Google", "GitHub", & "Email + Password" authentication, without having to create/handle the backend by ourselves or the server side things, for completely free.

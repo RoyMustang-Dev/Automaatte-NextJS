@@ -1,0 +1,73 @@
+=> Automaatte Pvt. Ltd.
+
+Website - Automaatte (Main website to be developed)
+Slogan - Transforming Tomorrow, Today
+Type of Website - AI Automation SaaS Platform
+Role - CEO + Overall Development
+
+Description -:
+
+Welcome to Automaatte, where AI meets ambition to turn today's ideas into tomorrow's achievements. We offer a suite of intelligent, automated Planning and Research solutions designed to streamline and elevate your personal and business endeavors across various industries. With Automaatte, time-consuming tasks become a breeze, letting you focus on what truly matters while we handle the details.
+
+1.) Core Services: Intelligent AI Planners and Insightful Researchers
+
+    a. AI Researchers : Researching is a very important but hectic task and generally a lot of time and energy can be saved if we can automate the same. Research is required in every field or aspect of industrial and individual development. Automaatte’s AI-driven planners transform complex planning into a seamless experience:
+
+        - Vacation Researching: Essential insights for individual and corporate travel planning.
+        - Education Researching: Data-driven recommendations for student career choices.
+        - Insurance Researching: Comprehensive insights into medical and vehicle insurance options.
+        - Investment Researching: In-depth data for crypto and stock market investments.
+        - Video Shoot Researching: Tailored content strategies for film, advertising, and social media.
+        - General Researching: Research for any other general purpose.
+    
+    b. AI Planners : What comes naturally after researching is to plan out things according to your research. Planning phase plays crucial roles in corporates and for individuals, so after you have done your research we will help you to plan accordingly with our carefully-crafted services. Our research tools provide data-backed insights for smarter decisions:
+
+        - Vacation Planning: Personalized itineraries for individual travelers and corporate retreats in the Tourism industry.
+        - Education Planning: Career pathway guidance tailored to students after 10th and 12th grades, empowering the next generation in EdTech.
+        - Insurance Planning: Clear, informed decision-making support for medical and vehicle insurance in the Banking sector.
+        - Money Investment Planning: Actionable insights into crypto and stock markets, unlocking smarter investment strategies in FinTech.
+        - Video Shoot Planning: Thoughtful, customized shoot plans for short films, ads, and YouTube content in AdTech and Social Media.
+        - General Planning: Customized plans for any other general purpose.
+
+
+2.) Special Services : We will also be providing some special services to our clients, some of the following mentioned services are in still in research phase but we will make sure to provide them to our clients as soon as possible: 
+
+    a. Recommendations- 
+        - skincare and makeup recommendations 
+        - Movie Recommendations 
+        - YouTube channel and video Recommendations 
+        - Games recommendations (along with available Cheatsheets) 
+
+    b. Custom Chatbots
+    
+    c. Social Media Automations 
+        - YouTube Shorts automation 
+        - Instagram Reels automation 
+        - LinkedIn posts automation 
+        - Blog posts Automations 
+        - Facebook posts automation 
+
+    d. Automation Services for IT professionals- 
+        - Excel Formulas generation 
+        - Database queries generation 
+        - Power BI functions generation 
+        - Database Cheatsheets 
+        - Programming Language Cheatsheets (according to the experience levels) 
+        - PowerBI Cheatsheets
+
+
+3.) Free/Complimentary Services : We have also included some very useful free services for our clients, which goes hand in hand with the two main services and are very useful in daily life scenarios also. 
+
+    a. Summarisation : Instant, clear overviews of complex topics.
+        - Text Summarisation 
+        - Video Summarisation 
+        - Document Summarisation 
+
+    b. Document QnA : Detailed answers to questions based on document content.
+    c. Real-Time Language Translation: Breaks language barriers, enhancing planning and research experiences with seamless text and speech translations.
+
+
+At Automaatte, we redefine productivity, bringing clarity to complexity. Step into a future where planning and research are automated, empowering you to achieve more, with precision and confidence.
+
+NOTE: The Core AI Services - AI Researchers & AI Planners, both are standalone services that can be used independently of each other and both go hand in hand with each other also. 
+Meaning User can use AI Researchers to do their research and then use AI Planners to plan out things according to their research or they can directly use AI Planners to plan out things without doing any research (by providing necessary information to the planner).
