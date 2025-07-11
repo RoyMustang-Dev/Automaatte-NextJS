@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Loader2, CheckCircle, XCircle } from 'lucide-react'
-import { supabase } from '../../lib/supabase'
+import { supabase, checkOAuthUserExists } from '../../lib/supabase'
 
 export const AuthCallbackPage: React.FC = () => {
   const navigate = useNavigate()
@@ -14,7 +14,7 @@ export const AuthCallbackPage: React.FC = () => {
       try {
         // Handle the auth callback
         const { data, error } = await supabase.auth.getSession()
-        
+
         if (error) {
           console.error('Auth callback error:', error)
           setStatus('error')
@@ -23,10 +23,40 @@ export const AuthCallbackPage: React.FC = () => {
           return
         }
 
-        if (data.session) {
+        if (data.session && data.session.user) {
+          const user = data.session.user
+          console.log('OAuth user:', user)
+
+          // Check if this is a new OAuth user (first time signing in)
+          if (user.email) {
+            const { data: existingUser, error: checkError } = await checkOAuthUserExists(user.email)
+
+            if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows returned
+              console.error('Error checking user existence:', checkError)
+              // Continue with sign in if we can't check
+            } else if (!existingUser) {
+              // User doesn't exist in our profiles table, sign them out and redirect to signup
+              console.log('OAuth user not found in profiles, signing out')
+              await supabase.auth.signOut()
+              setStatus('error')
+              setMessage('Account not found. Please sign up first.')
+              setTimeout(() => {
+                navigate('/auth/signin', {
+                  state: {
+                    showUserNotFound: true,
+                    email: user.email,
+                    provider: user.app_metadata?.provider || 'oauth'
+                  }
+                })
+              }, 3000)
+              return
+            }
+          }
+
+          // User exists or we couldn't check, proceed with sign in
           setStatus('success')
           setMessage('Authentication successful! Redirecting...')
-          
+
           // Redirect to dashboard after successful auth
           setTimeout(() => navigate('/dashboard'), 2000)
         } else {

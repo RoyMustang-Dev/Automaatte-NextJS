@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Brain, Github, Loader2 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { signInWithEmail, signInWithProvider } from '../../lib/supabase';
+import { signInWithEmail, signInWithProvider, checkDuplicateUser } from '../../lib/supabase';
+import { DuplicateAccountModal } from '../../components/DuplicateAccountModal';
+import { UserNotFoundModal } from '../../components/UserNotFoundModal';
 
 export const SignInPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +15,26 @@ export const SignInPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false);
+  const [showUserNotFoundModal, setShowUserNotFoundModal] = useState(false);
+  const [duplicateInfo, setDuplicateInfo] = useState({ email: '', existingProvider: '', attemptedProvider: '' });
+  const [userNotFoundInfo, setUserNotFoundInfo] = useState({ email: '', provider: '' });
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Handle OAuth callback state
+  useEffect(() => {
+    const state = location.state as any;
+    if (state?.showUserNotFound && state?.email) {
+      setUserNotFoundInfo({
+        email: state.email,
+        provider: state.provider || 'oauth'
+      });
+      setShowUserNotFoundModal(true);
+      // Clear the state
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +45,47 @@ export const SignInPage: React.FC = () => {
       const { data, error: signInError } = await signInWithEmail(email, password);
 
       if (signInError) {
+        console.log('Sign in error:', signInError);
+
+        // Check if user doesn't exist (common error messages)
+        if (signInError.message.includes('Invalid login credentials') ||
+            signInError.message.includes('Email not confirmed') ||
+            signInError.message.includes('Invalid email or password')) {
+
+          // Check if user exists with different provider
+          const { data: duplicateData, error: checkError } = await checkDuplicateUser(email);
+
+          if (checkError) {
+            console.log('Error checking duplicate user:', checkError);
+            // If we can't check, assume user doesn't exist
+            setError('Account not found. Please sign up first.');
+            setTimeout(() => {
+              navigate('/auth/signup', { state: { email } });
+            }, 2000);
+            setIsLoading(false);
+            return;
+          }
+
+          if (duplicateData && duplicateData.length > 0) {
+            // User exists with different provider
+            setDuplicateInfo({
+              email,
+              existingProvider: duplicateData[0].exists_with_provider,
+              attemptedProvider: 'email'
+            });
+            setShowDuplicateModal(true);
+            setIsLoading(false);
+            return;
+          } else {
+            // User doesn't exist, show modal
+            setUserNotFoundInfo({ email, provider: 'email' });
+            setShowUserNotFoundModal(true);
+            setIsLoading(false);
+            return;
+          }
+        }
+
+        // Other errors (wrong password, etc.)
         setError(signInError.message);
         setIsLoading(false);
         return;
@@ -31,9 +93,14 @@ export const SignInPage: React.FC = () => {
 
       if (data.user) {
         // Successful sign in
+        console.log('Sign in successful:', data.user);
         navigate('/dashboard');
+      } else {
+        setError('Sign in failed. Please try again.');
+        setIsLoading(false);
       }
     } catch (err) {
+      console.error('Unexpected sign in error:', err);
       setError('An unexpected error occurred. Please try again.');
       setIsLoading(false);
     }
@@ -46,6 +113,7 @@ export const SignInPage: React.FC = () => {
       if (error) {
         setError(error.message);
       }
+      // OAuth will handle redirects automatically
     } catch (err) {
       setError('Failed to sign in with Google. Please try again.');
     }
@@ -58,9 +126,25 @@ export const SignInPage: React.FC = () => {
       if (error) {
         setError(error.message);
       }
+      // OAuth will handle redirects automatically
     } catch (err) {
       setError('Failed to sign in with GitHub. Please try again.');
     }
+  };
+
+  const handleDuplicateSignIn = () => {
+    setShowDuplicateModal(false);
+    if (duplicateInfo.existingProvider === 'google') {
+      handleGoogleSignIn();
+    } else if (duplicateInfo.existingProvider === 'github') {
+      handleGitHubSignIn();
+    }
+    // For email provider, user should use the form
+  };
+
+  const handleUserNotFoundSignUp = () => {
+    setShowUserNotFoundModal(false);
+    navigate('/auth/signup', { state: { email: userNotFoundInfo.email } });
   };
 
   return (
@@ -234,6 +318,25 @@ export const SignInPage: React.FC = () => {
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* Duplicate Account Modal */}
+      <DuplicateAccountModal
+        isOpen={showDuplicateModal}
+        onClose={() => setShowDuplicateModal(false)}
+        onSignIn={handleDuplicateSignIn}
+        email={duplicateInfo.email}
+        existingProvider={duplicateInfo.existingProvider}
+        attemptedProvider={duplicateInfo.attemptedProvider}
+      />
+
+      {/* User Not Found Modal */}
+      <UserNotFoundModal
+        isOpen={showUserNotFoundModal}
+        onClose={() => setShowUserNotFoundModal(false)}
+        onSignUp={handleUserNotFoundSignUp}
+        email={userNotFoundInfo.email}
+        provider={userNotFoundInfo.provider}
+      />
     </div>
   );
 };

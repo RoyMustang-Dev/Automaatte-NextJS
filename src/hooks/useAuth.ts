@@ -21,26 +21,55 @@ export const useAuth = () => {
     // Get initial session
     const initializeAuth = async () => {
       try {
-        const { session } = await getSession()
-        const { user } = await getCurrentUser()
-        
+        const { session, error: sessionError } = await getSession()
+
+        if (sessionError) {
+          console.warn('Session error:', sessionError)
+          setAuthState({
+            user: null,
+            session: null,
+            loading: false,
+            error: null // Don't show session errors to user
+          })
+          return
+        }
+
+        const { user, error: userError } = await getCurrentUser()
+
+        if (userError) {
+          console.warn('User error:', userError)
+        }
+
         setAuthState({
-          user,
-          session,
+          user: user || null,
+          session: session || null,
           loading: false,
           error: null
         })
       } catch (error) {
+        console.error('Auth initialization error:', error)
         setAuthState({
           user: null,
           session: null,
           loading: false,
-          error: error instanceof Error ? error.message : 'Authentication error'
+          error: null // Don't block UI for initialization errors
         })
       }
     }
 
-    initializeAuth()
+    // Set a timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      console.log('Auth timeout reached, setting loading to false');
+      setAuthState(prev => ({
+        ...prev,
+        loading: false,
+        error: null
+      }))
+    }, 3000) // 3 second timeout
+
+    initializeAuth().finally(() => {
+      clearTimeout(timeoutId)
+    })
 
     // Listen for auth changes
     const { data: { subscription } } = onAuthStateChange(async (event, session) => {

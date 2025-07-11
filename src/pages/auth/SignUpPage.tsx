@@ -39,12 +39,15 @@ export const SignUpPage: React.FC = () => {
     setIsLoading(true);
 
     try {
+      // Check if this is the admin email
+      const isAdmin = formData.email === 'adityamishra0996@gmail.com';
+
       const { data, error: signUpError } = await signUpWithEmail(
         formData.email,
         formData.password,
         {
           name: formData.name,
-          user_type: formData.userType,
+          user_type: isAdmin ? 'admin' : formData.userType,
           company: formData.company
         }
       );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, User, LogOut, Settings, Brain } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LogOut, Settings, Brain, Shield } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuthContext } from '../contexts/AuthContext';
 
@@ -203,6 +203,31 @@ export const Navigation: React.FC = () => {
                       >
                         <Settings className="w-4 h-4 mr-3" />
                         Dashboard
+                      </button>
+
+                      {/* Admin Dashboard - Only show for admin */}
+                      {user?.email === 'adityamishra0996@gmail.com' && (
+                        <button
+                          onClick={() => {
+                            handleNavClick('/admin-dashboard');
+                            setUserDropdown(false);
+                          }}
+                          className="flex items-center w-full px-4 py-2 text-sm text-purple-300 hover:bg-purple-700/20 hover:text-purple-200 transition-colors"
+                        >
+                          <Shield className="w-4 h-4 mr-3" />
+                          Admin Dashboard
+                        </button>
+                      )}
+
+                      <button
+                        onClick={() => {
+                          handleNavClick('/profile');
+                          setUserDropdown(false);
+                        }}
+                        className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white transition-colors"
+                      >
+                        <User className="w-4 h-4 mr-3" />
+                        Profile
                       </button>
 
                       <button

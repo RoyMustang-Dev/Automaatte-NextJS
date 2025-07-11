@@ -17,7 +17,11 @@ export const signInWithProvider = async (provider: AuthProvider) => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${window.location.origin}/dashboard`
+      redirectTo: `${window.location.origin}/auth/callback`,
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent'
+      }
     }
   })
   return { data, error }
@@ -81,6 +85,24 @@ export const updateUser = async (userData: { name?: string; avatar_url?: string 
 
 export const onAuthStateChange = (callback: (event: string, session: any) => void) => {
   return supabase.auth.onAuthStateChange(callback)
+}
+
+export const checkDuplicateUser = async (email: string) => {
+  const { data, error } = await supabase.rpc('check_duplicate_user', {
+    user_email: email
+  })
+  return { data, error }
+}
+
+// Check if OAuth user exists before allowing sign in
+export const checkOAuthUserExists = async (email: string) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('email, provider')
+    .eq('email', email)
+    .single()
+
+  return { data, error }
 }
 
 // Types

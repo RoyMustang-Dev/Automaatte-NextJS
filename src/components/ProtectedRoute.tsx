@@ -45,6 +45,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/dashboard" replace />;
   }
 
+  // For auth pages that don't require auth, don't show loading
+  if (!requireAuth && location.pathname.startsWith('/auth/')) {
+    return <>{children}</>;
+  }
+
   // Render the protected content
   return <>{children}</>;
 };
