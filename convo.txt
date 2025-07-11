@@ -130,35 +130,56 @@ Free Hosting Stack
 ✅ Total Cost: $0/month
 🚀 How to Deploy (3 Steps):
 Step 1: Setup
+./setup.sh
+
 Step 2: Get API Keys (Free)
+
 Hugging Face: https://huggingface.co/settings/tokens
 Weather API: https://openweathermap.org/api
 News API: https://newsapi.org/register
 Financial API: https://www.alphavantage.co/support/#api-key
+
 Step 3: Deploy
+# Edit .env.local with your API keys
+nano .env.local
+
+# Deploy everything
+npm run deploy:all
+
+
 🎯 What Users Get:
 AI Researchers
+
 Real data gathering from multiple APIs
 AI-powered analysis using Hugging Face models
 Comprehensive reports with insights and recommendations
 Multi-source integration (weather, news, financial, etc.)
+
 AI Planners
+
 Detailed action plans based on research data
 Step-by-step implementation guides
 Resource allocation and timeline planning
 Success metrics and monitoring
+
 Smart Features
+
 Intelligent routing: Light tasks → HF API, Heavy tasks → Ollama
 Response caching: Faster responses for repeated queries
 Fallback systems: Multiple AI providers for reliability
 User tier optimization: Better models for paid users
+
+
 📊 Performance:
 Free Tier: 10-30 seconds response time
 Core Tier: 5-15 seconds response time
 Special Tier: 3-10 seconds response time
 Rate Limits: 60-500 requests/hour based on tier
 Uptime: 99.9% with automatic failover
+
+
 🔧 Files Created:
+
 Backend Files:
 ai-backend/main.py - FastAPI application
 ai-backend/services/ai_researchers.py - All research services
@@ -168,18 +189,23 @@ ai-backend/services/data_sources.py - External API integration
 ai-backend/utils/ - Authentication, caching, monitoring
 ai-backend/requirements.txt - Python dependencies
 ai-backend/Dockerfile - Container configuration
+
 Frontend Files:
 src/lib/aiService.ts - AI service client
 Updated service pages with real AI integration
+
 Deployment Files:
 railway.json - Railway deployment config
 scripts/deploy.sh - Complete deployment script
 setup.sh - One-command setup script
  .env.example - Environment template
+
 Documentation:
  AI_SERVICES_README.md - Complete implementation guide
  SETUP_GUIDE.md - Detailed setup instructions
  IMPLEMENTATION_ROADMAP.md - Technical implementation details
+
+ 
 🎉 Result:
 You now have a production-ready AI services platform that:
 
